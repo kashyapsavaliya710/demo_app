@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Add the dependency for the Google services Gradle plugin
+        classpath "com.google.gms:google-services:4.4.1"
+        // Add other dependencies if needed
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    // Additional configurations for all projects if needed
+}
+
+rootProject.buildDir = '../build'
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    // Additional configurations for subprojects if needed
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("cleanBuild", Delete) {
+    delete rootProject.buildDir
+}
+
+// Apply the Google services plugin
+apply plugin: 'com.google.gms.google-services'
+
+// Set the Kotlin version
+ext.kotlin_version = '1.6.10'
+
+// Apply the Android plugin
+apply plugin: 'com.android.application'
+
+// Configure Android settings
+android {
+    // Specify the compileSdkVersion
+    compileSdkVersion 31
+
+    // Add your Android-specific configurations here
+    // For example, you can specify build types, flavors, or other settings
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+}
